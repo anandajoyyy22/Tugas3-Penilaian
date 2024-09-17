@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-ryy+y@)z+9fz^p@-q17y+(^vw=-u7e%v=a0*cm1x0kfhee+83l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "ananda-joy-ecommerce.pbp.cs.ui.ac.id"]
+#"http://pbp.cs.ui.ac.id/ananda.joy/ecommerce"
 
 
 # Application definition

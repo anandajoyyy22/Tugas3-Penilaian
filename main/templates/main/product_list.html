@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block meta %}
+    <!-- Blok meta: Berisi meta informasi dan link ke CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <!-- Menghubungkan file CSS dari direktori static -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% endblock meta %}
+</head>
+
+<body>
+    {% block content %}
+    <!-- Blok konten: Menampilkan daftar produk -->
+    <h1>Product List</h1>
+    <!-- Daftar produk yang diambil dari context -->
+    <ul>
+        {% for product in products %}
+            <!-- Menampilkan nama dan harga setiap produk -->
+            <li>{{ product.name }} - ${{ product.price }}</li>
+        {% endfor %}
+    </ul>
+    {% endblock content %}
+</body>
+
+</html>

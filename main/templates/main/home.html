@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block meta %}
+    <!-- Blok meta: Bagian untuk meta informasi dan referensi ke file CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My E-commerce Site</title>
+    <!-- Menghubungkan file CSS dari direktori static -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% endblock meta %}
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Jopulee Gift</h1>
+            <!-- Navigasi utama -->
+            <nav>
+                <ul>
+                    <!-- Link ke halaman Home -->
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <!-- Link ke halaman Add Product -->
+                    <li><a href="{% url 'add_product' %}">Add Product</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Blok konten utama: Menampilkan produk unggulan -->
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="product-list">
+                <!-- Contoh item produk -->
+                <div class="product-item">
+                    <!-- Menampilkan gambar produk -->
+                    <img src="https://th.bing.com/th/id/OIP.5zp8vJ-lEtt4o-Ut8LbxWQHaJ4?w=186&h=248&c=7&r=0&o=5&dpr=1.6&pid=1.7" alt="Product Image">
+                    <!-- Nama produk -->
+                    <h3>Bouqet Artificial</h3>
+                    <!-- Harga produk -->
+                    <p>Rp50.000</p>
+                    <!-- Tombol untuk menambah ke keranjang -->
+                    <button>Add to Cart</button>
+                </div>
+                <!-- Produk lainnya dapat ditambahkan dengan struktur serupa -->
+            </div>
+        </div>
+        {% endblock content %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <!-- Copyright di bagian footer -->
+            <p>&copy; 2024 Jopulee Gift</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "ananda-joy-ecommerce.pbp.cs.ui.ac.id
 # Application definition
 
 INSTALLED_APPS = [
+    'main',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # Atur direktori template global
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,8 +70,10 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

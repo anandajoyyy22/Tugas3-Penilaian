@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block meta %}
+    <!-- Blok meta: Bagian ini berisi informasi meta dan tautan ke file CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <!-- Menghubungkan file CSS yang terletak di folder static -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% endblock meta %}
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Jopulee Gift</h1>
+            <!-- Navigasi utama -->
+            <nav>
+                <ul>
+                    <!-- Link menuju halaman Home -->
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <!-- Link menuju halaman Add Product -->
+                    <li><a href="{% url 'add_product' %}">Add Product</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        <div class="container">
+            <h2>Add New Product</h2>
+            <!-- Form untuk menambahkan produk baru -->
+            <form method="post" enctype="multipart/form-data">
+                <!-- Token CSRF untuk keamanan -->
+                {% csrf_token %}
+                <!-- Label dan input untuk nama produk -->
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <!-- Label dan input untuk harga produk -->
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+
+                <!-- Label dan input untuk gambar produk -->
+                <label for="image">Product Image:</label>
+                <input type="file" id="image" name="image" required>
+
+                <!-- Tombol untuk mengirimkan form -->
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+        {% endblock content %}
+    </main>
+    <footer>
+        <div class="container">
+            <!-- Copyright di bagian footer -->
+            <p>&copy; 2024 Jopulee Gift</p>
+        </div>
+    </footer>
+</body>
+</html>

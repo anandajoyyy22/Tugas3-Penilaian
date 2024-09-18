@@ -28,7 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "ananda-joy-ecommerce.pbp.cs.ui.ac.id"]
 #"http://pbp.cs.ui.ac.id/ananda.joy/ecommerce"
-
+#CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://<URL PWS KAMU>", "https://<URL_PWS_KAMU>"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://ananda-joy-ecommerce.pbp.cs.ui.ac.id"
+    "https://ananda-joy-ecommerce.pbp.cs.ui.ac.id",  # Gunakan HTTPS jika ini URL yang benar
+]
 
 # Application definition
 

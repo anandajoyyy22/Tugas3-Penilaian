@@ -21,9 +21,14 @@
             <nav>
                 <ul>
                     <!-- Link ke halaman Home -->
-                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'main:home' %}">Home</a></li>
                     <!-- Link ke halaman Add Product -->
-                    <li><a href="{% url 'add_product' %}">Add Product</a></li>
+                    <li><a href="{% url 'main:add_product' %}">Add Product</a></li>
+
+                    <li> <a href="{% url 'main:logout' %}"></a>
+                        <button>Logout</button>
+                        <h5>Sesi terakhir login: {{ last_login }}</h5>
+                    </a></li>
                 </ul>
             </nav>
         </div>

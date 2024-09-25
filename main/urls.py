@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import main_view  # Import view main_view
+from .views import main_view  # Import view main_view#
 from main.views import register
 from main.views import login_user
 from main.views import logout_user

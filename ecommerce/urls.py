@@ -25,6 +25,6 @@ urlpatterns = [
     path('', include('main.urls')),
 ]
 
-# Menambahkan pengaturan untuk file media
+# Menambahkan pengaturan untuk file media#
 if settings.DEBUG:  # Pastikan ini hanya aktif dalam mode DEBUG
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

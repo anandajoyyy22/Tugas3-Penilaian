@@ -16,7 +16,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from .forms import ProductForm
-
+#
 
 @login_required(login_url='/login')
 def home(request):

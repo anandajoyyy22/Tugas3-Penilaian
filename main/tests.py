@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.test import TestCase, Client
 from django.utils import timezone
 from .models import MoodEntry
-
+#
 class mainTest(TestCase):
     def test_main_url_is_exist(self):
         response = Client().get('')

@@ -27,7 +27,7 @@ jobs:
 
     - name: Check PWS remote, pull, merge, and push
       env:
-        PWS_URL: ${{ 'https://ananda.joy:ftCMO78NdkFr8PDsjwkOeQMveAN0zgLS@pbp.cs.ui.ac.id/ananda.joy/mentalhealthtracker' }} 
+        PWS_URL: ${{ secrets.PWS_URL }}
       run: |
           # Check if master branch exists locally
           if ! git show-ref --verify --quiet refs/heads/master; then

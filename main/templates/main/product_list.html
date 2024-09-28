@@ -22,6 +22,16 @@
         {% for product in products %}
             <!-- Menampilkan nama dan harga setiap produk -->
             <li>{{ product.name }} - ${{ product.price }}</li>
+            <a href="{% url 'main:edit_product' product.pk %}">
+                <button>
+                    Edit
+                </button>
+            </a>
+            <a href="{% url 'main:delete_mood' mood_entry.pk %}">
+                <button>
+                    Delete
+                </button>
+            </a>
         {% endfor %}
     </ul>
     {% endblock content %}

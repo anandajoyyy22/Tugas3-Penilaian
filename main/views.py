@@ -14,7 +14,7 @@ from django.contrib import messages
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .forms import ProductForm
 #
 
@@ -23,6 +23,8 @@ def home(request):
     products = Product.objects.filter(user=request.user)
     print(products)
     context = {
+        'npm': '2333445',
+        'class' : 'PBP E',
         'products': products,
         'name': request.user.username,
         'app_name': 'Jopulee Gift',
@@ -132,6 +134,28 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+def edit_product(request, id):
+    # Get mood entry berdasarkan id
+    mood = Product.objects.get(pk = id)
+
+    # Set mood entry sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=mood)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:home'))
+
+    context = {'form': form}
+    return render(request, "main/edit_product.html", context)
+
+def delete_product(request, id):
+    # Get mood berdasarkan id
+    mood = Product.objects.get(pk = id)
+    # Hapus mood
+    mood.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:home'))
 # def custom_logout(request):
 #     logout(request)
 #     messages.success(request, "Anda telah berhasil logout.")

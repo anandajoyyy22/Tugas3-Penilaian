@@ -1,71 +1,37 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en"> <!--  -->
-<head>
-    {% block meta %}
-    <!-- Blok meta: Bagian ini berisi informasi meta dan tautan ke file CSS -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
-    <!-- Menghubungkan file CSS yang terletak di folder static -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    {% endblock meta %}
-</head>
 
-<body>
-    <header>
-        <div class="container">
-            <h1>Jopulee Gift</h1>
-            <!-- Navigasi utama -->
-            <nav>
-                <ul>
-                    <!-- Link menuju halaman Home -->
-                    <li><a href="{% url 'main:home'  %}">Home</a></li>
-                    <!-- Link menuju halaman Add Product -->
-                    <li><a href="{% url 'main:add_product' %}">Add Product</a></li>
-                    <form method="post" enctype="multipart/form-data">
+{% block meta %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock meta %}
 
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% block content %}
+<!-- Sertakan navbar -->
+{% include 'navbar.html' %}
 
-    <main>
-        {% block content %}
-        <div class="container">
-            <h2>Add New Product</h2>
-            <!-- Form untuk menambahkan produk baru -->
-            <form method="post" enctype="multipart/form-data">
-                <!-- Token CSRF untuk keamanan -->
-                {% csrf_token %}
-                {{ form.as_p }}
-                <!-- Label dan input untuk nama produk -->
-                <!-- <label for="name">Product Name:</label>
-                <input type="text" id="name" name="name" required>
+<main class="min-h-screen pt-20 p-6" style="background: url('https://static.vecteezy.com/system/resources/previews/008/350/481/non_2x/sky-background-with-pastel-gradient-colors-free-vector.jpg') no-repeat center center fixed; background-size: cover;">  
+    <div class="container bg-white bg-opacity-60 rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
+        <!-- Form untuk menambahkan produk baru -->
+        <form method="post" enctype="multipart/form-data">
+            <!-- Token CSRF untuk keamanan -->
+            {% csrf_token %}
+            {{ form.as_p }}
+            <!-- Tombol untuk mengirimkan form -->
+            <button type="submit" class="bg-pink-700 hover:bg-pink-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                Add Product
+            </button>
+        </form>
+    </div>
+</main>
 
-                Label dan input untuk harga produk -->
-                <!-- <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" required> -->
-
-                <!-- Label dan input untuk gambar produk
-                <label for="image">Product Image:</label>
-                <input type="file" id="image" name="image" required> -->
-
-                <!-- Tombol untuk mengirimkan form -->
-                <button type="submit">Add Product</button>
-
-            </form>
-        </div>
-        {% endblock content %}
-    </main>
-    <footer>
-        <div class="container">
-            <!-- Copyright di bagian footer -->
-            <p>&copy; 2024 Jopulee Gift</p>
-        </div>
-    </footer>
-</body>
-</html>
-
-
-
+<!-- Footer dengan warna pink dan teks copyright di tengah -->
+<footer class="bg-pink-600 text-white mt-8">
+    <div class="container text-center py-4">
+        <p>&copy; 2024 Jopulee Gift</p>
+    </div>
+</footer>
+{% endblock content %}

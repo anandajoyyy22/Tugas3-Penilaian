@@ -1,4 +1,4 @@
-<nav class="bg-indigo-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
+<nav class="bg-pink-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -6,15 +6,15 @@
         </div>
         <div class="hidden md:flex items-center">
           {% if user.is_authenticated %}
-            <span class="text-gray-300 mr-4">Welcome, {{ user.username }}</span>
-            <a href="{% url 'main:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+            <span class="text-gray-100 mr-4">Welcome, {{ user.username }}</span>
+            <a href="{% url 'main:logout' %}" class="text-center bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded transition duration-300">
               Logout
             </a>
           {% else %}
-            <a href="{% url 'main:login' %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
+            <a href="{% url 'main:login' %}" class="text-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
               Login
             </a>
-            <a href="{% url 'main:register' %}" class="text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+            <a href="{% url 'main:register' %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
               Register
             </a>
           {% endif %}
@@ -37,7 +37,7 @@
             Logout
           </a>
         {% else %}
-          <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
+          <a href="{% url 'main:login' %}" class="block text-center bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
             Login
           </a>
           <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">

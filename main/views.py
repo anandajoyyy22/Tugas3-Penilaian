@@ -23,8 +23,8 @@ def home(request):
     products = Product.objects.filter(user=request.user)
     print(products)
     context = {
-        'npm': '2333445',
-        'class' : 'PBP E',
+        # 'npm': '2333445',
+        # 'class' : 'PBP E',
         'products': products,
         'name': request.user.username,
         'app_name': 'Jopulee Gift',

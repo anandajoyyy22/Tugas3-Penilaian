@@ -17,10 +17,10 @@
     {% block content %}
     <!-- Blok konten: Menampilkan daftar produk# -->
     <h1>Product List</h1>
-    <!-- Daftar produk yang diambil dari context -->
+    <!-- Daftar produk yang diambil dari contextt -->
     <ul>
         {% for product in products %}
-            <!-- Menampilkan nama dan harga setiap produk -->
+            <!-- Menampilkan nama dan harga setiap produkk -->
             <li>{{ product.name }} - ${{ product.price }}</li>
             <a href="{% url 'main:edit_product' product.pk %}">
                 <button>

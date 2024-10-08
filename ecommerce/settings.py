@@ -37,7 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://ananda-joy-ecommerce.pbp.cs.ui.ac.id",  # Gunakan HTTPS jika ini URL yang benar
 ]
 
-# Application definition
+# Application definitionn
 
 INSTALLED_APPS = [
     'main',

@@ -5,4 +5,6 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'price', 'description', 'category', 'stock', 'image']
-##
+
+        
+###

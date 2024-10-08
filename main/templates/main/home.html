@@ -21,7 +21,11 @@
         <a href="{% url 'main:add_product' %}" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
             Add New Product Entry
         </a>
+        <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+            Add New Product Entry by AJAX
+          </button>
     </div>
+
 
     <!-- Menampilkan produk Featured -->
     <h2 class="text-xl font-bold mb-4">Featured Products</h2>
@@ -38,7 +42,8 @@
             </div>
         </div>
 
-        <!-- Menampilkan produk dari database (produk lainnya) -->
+        <div id="mood_entry_cards"></div>
+        <!-- Menampilkan produk dari database (produk lainnyaa) -->
         {% for product in products %}
         <div class="product-item rounded-lg shadow-lg p-4 bg-white">
             {% if product.image %}
@@ -60,12 +65,132 @@
         {% endfor %}
     </div>
 </main>
-
+<div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+    <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 border-b rounded-t">
+        <h3 class="text-xl font-semibold text-gray-900">
+          Add New Mood Entry
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+          <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="px-6 py-4 space-y-6 form-style">
+        <form id="moodEntryForm">
+          {{form.as_p}}
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+        <button type="submit" id="submitMoodEntry" form="moodEntryForm" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+      </div>
+    </div>
+  </div>
 <!-- Footer dengan warna pink, teks copyright di tengah, dan memenuhi lebar halaman -->
 <footer class="bg-pink-600 text-white mt-8">
     <div class="container mx-auto text-center py-4">
         <p>&copy; 2024 Jopulee Gift</p>
     </div>
 </footer>
+<script>
+    async function getMoodEntries(){
+        return fetch("{% url 'main:products_json' %}").then((res) => res.json())
+    }
+
+    async function refreshMoodEntries() {
+    document.getElementById("mood_entry_cards").innerHTML = "";
+    document.getElementById("mood_entry_cards").className = "";
+    const moodEntries = await getMoodEntries();
+    let htmlString = "";
+    let classNameString = "";
+    
+    if (moodEntries.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">Belum ada data mood pada mental health tracker.</p>
+            </div>
+        `;
+    }
+    else {
+       
+        moodEntries.forEach((item) => {
+            htmlString += `
+            <div class="product-item rounded-lg shadow-lg p-4 bg-white">
+            ${item.fields.image ? `<img src="http://localhost:8000/${item.fields.image.url}" alt="${item.fields.name}" class="w-full h-auto object-contain rounded-lg mb-4">` : `<img src="/static/default-image.jpg" alt="No Image Available" class="w-full h-auto object-contain rounded-lg mb-4">`}
+            
+        
+            <h3 class="text-lg font-semibold">${item.fields.name}</h3>
+            <p class="text-gray-600">Rp${item.fields.price}</p>
+            <p class="text-gray-600">Deskripsi: ${item.fields.description}</p>
+            <p class="text-gray-600">Category: ${item.fields.category }</p>
+            <p class="text-gray-600">Jumlah: ${item.fields.stock }</p> <!-- Menampilkan jumlah produk -->
+            <button class="bg-pink-600 text-white py-2 px-4 rounded mt-4">Add to Cart</button>
+            <div class="mt-2">
+                <a href="/edit-product/${item.fields.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded-lg">Edit</a>
+                <a href="/delete-product/${item.fields.pk}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-lg">Delete</a>
+            </div>
+        </div>
+            `;
+        });
+    }
+    document.getElementById("mood_entry_cards").className = classNameString;
+    document.getElementById("mood_entry_cards").innerHTML = htmlString;
+}
+const modal = document.getElementById('crudModal');
+  const modalContent = document.getElementById('crudModalContent');
+
+  function showModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modal.classList.remove('hidden'); 
+      setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      }, 50); 
+  }
+
+  function hideModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modalContent.classList.remove('opacity-100', 'scale-100');
+      modalContent.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150); 
+  }
+
+  document.getElementById("cancelButton").addEventListener("click", hideModal);
+  document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+
+  function addProductEntry() {
+    fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#moodEntryForm')),
+    })
+    .then(response => refreshMoodEntries())
+
+    document.getElementById("moodEntryForm").reset(); 
+    document.querySelector("[data-modal-toggle='crudModal']").click();
+
+    return false;
+  }
+  document.getElementById("moodEntryForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    addProductEntry();
+  })
+
+refreshMoodEntries();
+  </script>
 
 {% endblock content %}

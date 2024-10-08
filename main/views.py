@@ -16,16 +16,17 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect, reverse
 from .forms import ProductForm
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 #
 
 @login_required(login_url='/login')
 def home(request):
-    products = Product.objects.filter(user=request.user)
-    print(products)
+    form = ProductForm()
     context = {
         # 'npm': '2333445',
         # 'class' : 'PBP E',
-        'products': products,
+        'form': form,
         'name': request.user.username,
         'app_name': 'Jopulee Gift',
         'Customer_name': 'Nama Customer',
@@ -33,6 +34,7 @@ def home(request):
         'last_login': request.COOKIES.get('last_login'),
     }
     return render(request, 'main/home.html', context)
+    
 
 # def create_product(request):
 #     if request.method == 'POST':
@@ -72,12 +74,12 @@ def main_view(request):
 #     return render(request, 'main/main.html', {'products': products})
 
 def product_json(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
     data = serializers.serialize('json', products)
-    return HttpResponse(data, request, content_type='application/json')
+    return HttpResponse(serializers.serialize("json", products), content_type="application/json")
 
 def product_xml(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
     data = serializers.serialize('xml', products)
     return HttpResponse(data, request, content_type='application/xml')
 
@@ -120,7 +122,6 @@ def login_user(request):
         response = HttpResponseRedirect(reverse("main:home"))
         response.set_cookie('last_login', str(datetime.datetime.now()))
         return response
-
    else:
       form = AuthenticationForm(request)
    context = {'form': form}
@@ -156,7 +157,20 @@ def delete_product(request, id):
     mood.delete()
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('main:home'))
+
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    form = ProductForm(request.POST, request.FILES) # Menangani upload file (gambar produk)
+    product_entry = form.save(commit=False) 
+    product_entry.user = request.user  # Mengaitkan produk dengan pengguna yang sedang login
+    # form.save()
+    product_entry.save() # Menyimpan produk ke database
+    return HttpResponse(b"CREATED", status=201)
+
 # def custom_logout(request):
 #     logout(request)
 #     messages.success(request, "Anda telah berhasil logout.")
 #     return redirect('main:home')
+
+#

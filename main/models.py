@@ -23,6 +23,7 @@ class Product(models.Model):
     category = models.CharField(max_length=50, null=True, blank=True)
     stock = models.IntegerField(default=0)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
+    image_url = models.URLField()
 
     def __str__(self):
         return self.name

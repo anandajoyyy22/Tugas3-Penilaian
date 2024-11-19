@@ -18,7 +18,10 @@ from django.shortcuts import render, redirect, reverse
 from .forms import ProductForm
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-#
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+
 
 @login_required(login_url='/login')
 def home(request):
@@ -83,22 +86,32 @@ def product_xml(request):
     data = serializers.serialize('xml', products)
     return HttpResponse(data, request, content_type='application/xml')
 
-def product_json_by_id(request, id):
+def product_json_by_id(request, pk):
     try:
-        product = Product.objects.get(id=id)
+        # Ambil data produk berdasarkan primary key
+        product = Product.objects.get(pk=pk)
     except Product.DoesNotExist:
+        # Kembalikan respons jika data tidak ditemukan
         return HttpResponse('Product not found', status=404)
+    
+    # Serialisasi data ke format JSON
     data = serializers.serialize('json', [product])
-    return HttpResponse(data, request, content_type='application/json')
+    # Kembalikan respons JSON
+    return HttpResponse(data, content_type='application/json')
 
-def product_xml_by_id(request, id):
+
+def product_xml_by_id(request, pk):
     try:
-        product = Product.objects.get(id=id)
+        # Ambil data produk berdasarkan primary key
+        product = Product.objects.get(pk=pk)
     except Product.DoesNotExist:
+        # Kembalikan respons jika data tidak ditemukan
         return HttpResponse('Product not found', status=404)
-    product = Product.objects.get(id=id)
+    
+    # Serialisasi data ke format XML
     data = serializers.serialize('xml', [product])
-    return HttpResponse(data, request, content_type='application/xml')
+    # Kembalikan respons XML
+    return HttpResponse(data, content_type='application/xml')
 
 def register(request):
     form = UserCreationForm()
@@ -167,6 +180,31 @@ def add_product_entry_ajax(request):
     # form.save()
     product_entry.save() # Menyimpan produk ke database
     return HttpResponse(b"CREATED", status=201)
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        try:
+            # Parsing JSON dari request body
+            data = json.loads(request.body)
+
+            # Membuat instance MoodEntry baru
+            new_product= Product.objects.create(
+                name=data["name"],
+                price=int(data["price"]),
+                description=data["description"],
+                category=data["category"],
+                stock=int(data["stock"]),
+                image_url=data["image_url"]
+            )
+
+            new_product.save()
+
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=401)
 
 # def custom_logout(request):
 #     logout(request)
